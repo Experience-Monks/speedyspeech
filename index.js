@@ -20,6 +20,8 @@ var SpeedySpeech = function( settings, callBack ) {
 
 	this.isRecognizing = false;
 	this.keyWordConfidence = settings.keyWordConfidence || 0.7;
+	this.autoRestart = settings.autoRestart || false;
+	this.onTimeOut = settings.onTimeOut || null;
 	this.setKeywords( keywords );
 
 	this.callBack = callBack;
@@ -117,7 +119,22 @@ SpeedySpeech.prototype = {
 
 	onREnd: function() {
 
-		this.isRecognizing = false;
+		if( this.isRecognizing ) {
+
+			if( this.isRecognizing ) {
+
+				if( this.autoRestart ) {
+
+					this.isRecognizing = false;
+					this.start();	
+				}	
+
+				if( this.onTimeOut )
+					this.onTimeOut();
+			}
+			
+			this.isRecognizing = false;
+		}
 	},
 
 	onRError: function( err ) {
