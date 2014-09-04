@@ -31,6 +31,9 @@ var SpeedySpeech = function( settings, callBack ) {
 
 	this.recognition = new SpeechRecognition();
 
+	if( settings.language )
+		this.recognition.lang = settings.language;
+
 	this.recognition.onstart = this.onRStart;
 	this.recognition.onresult = this.onRResult;
 	this.recognition.onend = this.onREnd;
