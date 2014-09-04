@@ -3,7 +3,7 @@ var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogniti
 var SpeedySpeech = function( settings, callBack ) {
 
 	if( !( this instanceof SpeedySpeech ) )
-		return new SpeedySpeech( settings );
+		return new SpeedySpeech( settings, callBack );
 
 	var keywords = settings.keywords;
 
