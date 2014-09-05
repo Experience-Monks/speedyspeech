@@ -26,7 +26,6 @@ var SpeedySpeech = function( settings, callBack ) {
 
 	this.callBack = callBack;
 
-	this.onRStart = this.onRStart.bind( this );
 	this.onRResult = this.onRResult.bind( this );
 	this.onREnd = this.onREnd.bind( this );
 	this.onRError = this.onRError.bind( this );
@@ -50,8 +49,11 @@ SpeedySpeech.prototype = {
 
 	start: function() {
 
-		if( !this.isRecognizing )
+		if( !this.isRecognizing ) {
+
+			this.isRecognizing = true;
 			this.recognition.start();
+		}
 	},
 
 	stop: function() {
@@ -68,11 +70,6 @@ SpeedySpeech.prototype = {
 			
 			this.keyLookup[ keywords[ i ].toLowerCase() ] = true;
 		}
-	},
-
-	onRStart: function() {
-
-		this.isRecognizing = true;
 	},
 
 	onRResult: function( ev ) {
