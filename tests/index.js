@@ -2,8 +2,6 @@ var speedyspeech = require( '../index' );
 
 var keywords = [ 'sports', 'future', 'family' ];
 
-console.log( speedyspeech );
-
 var fastRecog = new speedyspeech( {
 
 	keywords: keywords

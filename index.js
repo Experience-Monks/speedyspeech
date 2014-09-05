@@ -66,7 +66,7 @@ SpeedySpeech.prototype = {
 
 		for( var i = 0, len = keywords.length; i < len; i++ ) {
 			
-			this.keyLookup[ keywords[ i ] ] = true;
+			this.keyLookup[ keywords[ i ].toLowerCase() ] = true;
 		}
 	},
 
@@ -78,43 +78,50 @@ SpeedySpeech.prototype = {
 	onRResult: function( ev ) {
 
 		var results = ev.results,
-			resultPart, words, result, foundWord, confidence;
+			result = [],
+			resultPart, words, result, foundWord, confidence, isFinal;
 
-		for( var i = 0, len = results.length; !result && i < len; i++ ) {
+		for( var i = 0, len = results.length; i < len; i++ ) {
 
 			if( !results[ i ].isFinal ) { 
 
-				for( var j = 0, lenJ = results[ i ].length; !result && j < lenJ; j++ ) {
+				for( var j = 0, lenJ = results[ i ].length; j < lenJ; j++ ) {
 
 					resultPart = results[ i ][ j ];
-					words = resultPart.transcript.split( ' ' );
+					words = resultPart.transcript.toLowerCase().split( ' ' );
 
-					for( var k = 0, lenK = words.length; !result && k < lenK; k++ ) {
+					for( var k = 0, lenK = words.length; k < lenK; k++ ) {
 
 						if( this.keyLookup[ words[ k ] ] ) {
 
-							if( resultPart.confidence > this.keyWordConfidence ) {
+							if( resultPart.confidence > this.keyWordConfidence && 
+								( confidence === undefined || resultPart.confidence > confidence ) ) {
 
 								foundWord = words[ k ];
-								result = resultPart.transcript;
 								confidence = resultPart.confidence;
-
-								this.stop();
 							}
 						}
 					}
+
+					result.push( resultPart.transcript );
 				} 
 			} else {
 
-				result = results[ i ][ 0 ].transcript;
+				isFinal = true;
+				result = [ results[ i ][ 0 ].transcript ];
 				confidence = results[ i ][ 0 ].confidence;
 
-				this.stop();
+				break; //since this is final we'll break out
 			}
 		}
 
-		if( result )
-			this.callBack( undefined, result, confidence, foundWord );
+
+		if( foundWord || isFinal ) {
+
+			this.stop();
+
+			this.callBack( undefined, result.join( '' ), confidence, foundWord );
+		}
 	},
 
 	onREnd: function() {
