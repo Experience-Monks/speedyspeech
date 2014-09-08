@@ -40,6 +40,10 @@ var SpeedySpeech = function( settings, callBack ) {
 	this.recognition.onend = this.onREnd;
 	this.recognition.onerror = this.onRError;
 
+	this.result = null; 
+	this.confidence = null;
+	this.foundWord = null;
+
 	this.recognition.interimResults = true;
 };
 
@@ -60,7 +64,6 @@ SpeedySpeech.prototype = {
 
 		if( this.isRecognizing ) {
 
-			this.isRecognizing = false;
 			this.recognition.abort();
 		}
 	},
@@ -120,7 +123,11 @@ SpeedySpeech.prototype = {
 
 			this.stop();
 
-			this.callBack( undefined, result.join( '' ), confidence, foundWord );
+			this.result = result.join( '' );
+			this.confidence = confidence;
+			this.foundWord = foundWord;
+
+			console.log( 'got something' );
 		}
 	},
 
@@ -139,6 +146,13 @@ SpeedySpeech.prototype = {
 		}
 		
 		this.isRecognizing = false;
+
+		if( this.result )
+			this.callBack( undefined, this.result, this.confidence, this.foundWord );
+		
+		this.result = null; 
+		this.confidence = null;
+		this.foundWord = null;
 	},
 
 	onRError: function( err ) {

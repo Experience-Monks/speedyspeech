@@ -11,6 +11,10 @@ var fastRecog = new speedyspeech( {
 		throw err;
 
 	console.log( result, confidence, foundKeyword );
+
+	fastRecog.start();
+
+	console.log( 'restarted' );
 });
 
 fastRecog.start();
