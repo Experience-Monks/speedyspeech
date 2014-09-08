@@ -58,8 +58,11 @@ SpeedySpeech.prototype = {
 
 	stop: function() {
 
-		if( this.isRecognizing )
+		if( this.isRecognizing ) {
+
+			this.isRecognizing = false;
 			this.recognition.abort();
+		}
 	},
 
 	setKeywords: function( keywords ) {
@@ -125,20 +128,17 @@ SpeedySpeech.prototype = {
 
 		if( this.isRecognizing ) {
 
-			if( this.isRecognizing ) {
+			if( this.autoRestart ) {
 
-				if( this.autoRestart ) {
+				this.isRecognizing = false;
+				this.start();	
+			}	
 
-					this.isRecognizing = false;
-					this.start();	
-				}	
-
-				if( this.onTimeOut )
-					this.onTimeOut();
-			}
-			
-			this.isRecognizing = false;
+			if( this.onTimeOut )
+				this.onTimeOut();
 		}
+		
+		this.isRecognizing = false;
 	},
 
 	onRError: function( err ) {
@@ -146,10 +146,9 @@ SpeedySpeech.prototype = {
 		if( err.error == 'not-allowed' ) {
 
 			this.callBack( new Error( 'user denied speech recognition' ) );
-		} else if( err.error == 'aborted' ) {
 
-			this.isRecognizing = false;
-		} else {
+		//aborted is when the stop has been called
+		} else if( err.error != 'aborted' ) {
 
 			this.callBack( err );
 		}
