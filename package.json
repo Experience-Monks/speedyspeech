@@ -1,6 +1,6 @@
 {
   "name": "speedyspeech",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Fast speech recognition in browsers using keywords",
   "main": "index.js",
   "directories": {
