@@ -133,26 +133,28 @@ SpeedySpeech.prototype = {
 
 	onREnd: function() {
 
-		if( this.isRecognizing ) {
+		this.isRecognizing = false;
+
+		// if speech recognition has stopped and we don't have a result
+		// then we'll auto restart
+		if( !this.result ) {
 
 			if( this.autoRestart ) {
 
-				this.isRecognizing = false;
 				this.start();	
 			}	
 
 			if( this.onTimeOut )
 				this.onTimeOut();
-		}
-		
-		this.isRecognizing = false;
+		// since we have a result we'll just return it
+		} else {
 
-		if( this.result )
 			this.callBack( undefined, this.result, this.confidence, this.foundWord );
-		
-		this.result = null; 
-		this.confidence = null;
-		this.foundWord = null;
+
+			this.result = null; 
+			this.confidence = null;
+			this.foundWord = null;
+		}
 	},
 
 	onRError: function( err ) {
