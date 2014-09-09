@@ -37,7 +37,6 @@ var SpeedySpeech = function( settings, callBack ) {
 
 	this.recognition.onstart = this.onRStart;
 	this.recognition.onresult = this.onRResult;
-	this.recognition.onend = this.onREnd;
 	this.recognition.onerror = this.onRError;
 
 	this.result = null; 
@@ -55,6 +54,7 @@ SpeedySpeech.prototype = {
 
 		if( !this.isRecognizing ) {
 
+			this.recognition.onend = this.onREnd;
 			this.isRecognizing = true;
 			this.recognition.start();
 		}
