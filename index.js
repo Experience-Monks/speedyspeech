@@ -136,6 +136,14 @@ SpeedySpeech.prototype = {
 		}
 	},
 
+	checkRestart: function() {
+
+		if( this.autoRestart ) {
+
+			this.start();	
+		}
+	},
+
 	onREnd: function() {
 
 		this.isRecognizing = false;
@@ -144,10 +152,7 @@ SpeedySpeech.prototype = {
 		// then we'll auto restart
 		if( !this.result ) {
 
-			if( this.autoRestart ) {
-
-				this.start();	
-			}	
+			this.checkRestart();
 
 			if( this.onTimeOut )
 				this.onTimeOut();
@@ -167,7 +172,9 @@ SpeedySpeech.prototype = {
 		if( err.error == 'not-allowed' ) {
 
 			this.callBack( new Error( 'user denied speech recognition' ) );
+		} else if( err.error == 'no-speech' ) {
 
+			this.checkRestart();
 		//aborted is when the stop has been called
 		} else if( err.error != 'aborted' ) {
 
