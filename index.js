@@ -52,9 +52,10 @@ SpeedySpeech.prototype = {
 
 	start: function() {
 
+		this.recognition.onend = this.onREnd;
+		
 		if( !this.isRecognizing ) {
 
-			this.recognition.onend = this.onREnd;
 			this.isRecognizing = true;
 			this.recognition.start();
 		}
