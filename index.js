@@ -62,10 +62,14 @@ SpeedySpeech.prototype = {
 
 	stop: function() {
 
+		this.recognition.onend = null;
+
 		if( this.isRecognizing ) {
 
 			this.recognition.abort();
 		}
+
+		this.isRecognizing = false;
 	},
 
 	setKeywords: function( keywords ) {
@@ -121,13 +125,13 @@ SpeedySpeech.prototype = {
 
 		if( foundWord || isFinal ) {
 
-			this.stop();
+			// this will cause the speech recognition to end
+			// and for recognition callback to be sent out
+			this.recognition.abort();
 
 			this.result = result.join( '' );
 			this.confidence = confidence;
 			this.foundWord = foundWord;
-
-			console.log( 'got something' );
 		}
 	},
 
