@@ -1,13 +1,13 @@
 {
   "name": "speedyspeech",
   "version": "0.1.1",
-  "description": "Fast speech recognition in browsers using keywords",
+  "description": "This is a module to quickly use the Web Speech API to recognize keywords as a user speaks.",
   "main": "index.js",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "budo test/ --live --open"
   },
   "repository": {
     "type": "git",
@@ -17,12 +17,17 @@
     "speech",
     "recognition",
     "browser",
-    "keyword"
+    "keyword",
+    "web",
+    "word"
   ],
   "author": "Mikko Haapoja <me@mikkoh.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Jam3/speedyspeech/issues"
   },
-  "homepage": "https://github.com/Jam3/speedyspeech"
+  "homepage": "https://github.com/Jam3/speedyspeech",
+  "devDependencies": {
+    "budo": "^8.3.0"
+  }
 }
